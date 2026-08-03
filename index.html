@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#1b2430; --parchment:#f6f1e7; --paper:#fffdf8;
+      --line:#d9d2c1; --brass:#9c7a3c; --brass-dark:#6e5726;
+      --muted:#5b6472; --danger:#a63c3c; --success:#3c6e4f;
+    }
+    *{box-sizing:border-box;}
+    html{-webkit-text-size-adjust:100%;}
+    body{
+      margin:0; background:var(--parchment); color:var(--ink);
+      font-family:'Inter',sans-serif; min-height:100vh;
+      display:flex; flex-direction:column; align-items:center;
+      gap:18px; padding:32px 16px 40px;
+    }
+    .sheet{
+      width:100%; max-width:520px; background:var(--paper);
+      border:1px solid var(--line); position:relative;
+      box-shadow:0 1px 2px rgba(27,36,48,0.04);
+    }
+    .letterhead{
+      padding:32px 40px 22px; text-align:center; border-bottom:1px dashed var(--line);
+      position:relative;
+    }
+    .letterhead .seal{
+      width:44px; height:44px; border-radius:50%; border:1.5px solid var(--brass);
+      display:flex; align-items:center; justify-content:center; margin:0 auto 14px;
+      color:var(--brass); font-family:'Fraunces',serif; font-size:17px;
+    }
+    .letterhead h1{
+      font-family:'Fraunces',serif; font-weight:500; font-size:24px; margin:0 0 6px;
+      letter-spacing:0.2px;
+    }
+    .letterhead p{margin:0; font-size:13px; color:var(--muted); letter-spacing:0.3px;}
+    .eyebrow{
+      font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--brass-dark);
+      margin-bottom:10px;
+    }
+    .body-pad{padding:36px 40px 40px;}
+    .step{display:none;}
+    .step.active{display:block;}
+    label{
+      display:block; font-size:12px; color:var(--muted); margin:0 0 5px; font-weight:500;
+    }
+    .field{margin-bottom:16px;}
+    input[type=text], input[type=email], input[type=date], textarea{
+      width:100%; padding:11px 12px; font-family:'Inter',sans-serif; font-size:14px;
+      border:1px solid var(--line); border-radius:2px; background:var(--paper); color:var(--ink);
+    }
+    input:focus, textarea:focus{outline:none; border-color:var(--brass);}
+    textarea{resize:vertical; min-height:64px;}
+    .code-input{
+      text-align:center; letter-spacing:4px; font-size:18px; font-family:'Fraunces',serif;
+    }
+    button{
+      width:100%; padding:13px; font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
+      background:var(--ink); color:var(--paper); border:none; border-radius:2px; cursor:pointer;
+      letter-spacing:0.2px;
+    }
+    button:hover{background:#2a3546;}
+    button.ghost{
+      background:transparent; color:var(--ink); border:1px solid var(--line); margin-top:10px;
+    }
+    button.ghost:hover{background:var(--parchment);}
+    button:disabled{opacity:0.55; cursor:default;}
+    .center{text-align:center;}
+    .muted{color:var(--muted); font-size:13px;}
+    .msg{font-size:13px; margin-top:10px; min-height:16px;}
+    .msg.error{color:var(--danger);}
+    .msg.success{color:var(--success);}
+    .icon{width:30px; height:30px; margin:0 auto 14px; display:block;}
+    .checkline{
+      display:flex; gap:9px; align-items:flex-start; font-size:13px; color:var(--muted);
+      margin:18px 0 20px;
+    }
+    .checkline input{margin-top:3px;}
+    .note{
+      font-size:12.5px; color:var(--muted); background:var(--parchment);
+      border-left:2px solid var(--brass); padding:10px 12px; margin:6px 0 20px; line-height:1.5;
+    }
+    .footer-id{
+      text-align:center; font-size:11px; color:var(--muted); letter-spacing:0.5px; margin-top:6px;
+    }
+
+    /* ---------- Quick links (complaints + rent portal) ---------- */
+    .quicklinks{
+      width:100%; max-width:520px;
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .quick-card{
+      flex:1; display:block; text-decoration:none; color:var(--ink);
+      background:var(--paper); border:1px solid var(--line); border-radius:2px;
+      padding:18px 20px; transition:border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+    }
+    .quick-card:hover{
+      border-color:var(--brass); transform:translateY(-1px);
+      box-shadow:0 4px 10px rgba(27,36,48,0.06);
+    }
+    .quick-card:active{transform:translateY(0);}
+    .quick-card .qc-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .quick-card .qc-label{
+      font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--brass-dark);
+    }
+    .quick-card .qc-arrow{color:var(--brass); font-size:14px; flex:0 0 auto;}
+    .quick-card .qc-type{
+      font-family:'Fraunces',serif; font-size:16px; margin-top:8px; min-height:22px;
+      white-space:nowrap; overflow:hidden;
+    }
+    .quick-card .qc-type::after{
+      content:''; display:inline-block; width:2px; height:15px; background:var(--brass);
+      margin-left:2px; vertical-align:-2px; animation:qc-blink 0.9s steps(1) infinite;
+    }
+    @keyframes qc-blink{50%{opacity:0;}}
+    .quick-card .qc-sub{font-size:12px; color:var(--muted); margin-top:6px; line-height:1.4;}
+
+    @media(min-width:560px){
+      .quicklinks{flex-direction:row;}
+    }
+
+    /* ---------- Small-screen refinements ---------- */
+    @media(max-width:420px){
+      body{padding:20px 12px 32px; gap:14px;}
+      .letterhead{padding:24px 20px 16px;}
+      .letterhead h1{font-size:20px;}
+      .body-pad{padding:24px 20px 28px;}
+      .quick-card{padding:16px;}
+    }
+  </style>
+</head>
+<body>
+<div class="sheet">
+  <div class="letterhead">
+    <div class="seal">N</div>
+    <h1>Notice to vacate</h1>
+    <p>Official tenant portal</p>
+  </div>
+
+  <div class="body-pad">
+
+    <!-- Step 1: Access code -->
+    <div class="step active" id="step-code">
+      <div class="eyebrow center">Restricted access</div>
+      <p class="muted center" style="margin-bottom:22px;">Enter the access code provided by your property manager.</p>
+      <div class="field">
+        <input class="code-input" type="text" id="accessCode" placeholder="ACCESS CODE" autocomplete="off">
+      </div>
+      <button onclick="checkCode()" id="codeBtn">Continue</button>
+      <div class="msg" id="codeMsg"></div>
+    </div>
+
+    <!-- Step 2: Touch ID -->
+    <div class="step" id="step-touchid">
+      <div class="center">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#9c7a3c" stroke-width="1.5">
+          <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"/>
+          <path d="M8 13v1a4 4 0 0 0 8 0v-1"/>
+          <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>
+          <path d="M12 9v3"/>
+        </svg>
+        <div class="eyebrow">Identity verification</div>
+        <p class="muted" style="margin:0 0 24px;">Confirm it&rsquo;s you with Touch ID before we open the form.</p>
+      </div>
+      <button onclick="runTouchId()" id="touchBtn">Verify with Touch ID</button>
+      <button class="ghost" onclick="skipTouchId()">Use passcode only</button>
+      <div class="msg" id="touchMsg"></div>
+    </div>
+
+    <!-- Step 3: Form -->
+    <div class="step" id="step-form">
+      <div class="eyebrow">Tenant particulars</div>
+      <div class="field">
+        <label>Full legal name *</label>
+        <input type="text" id="fullName" placeholder="Jordan Whitaker">
+      </div>
+      <div class="field">
+        <label>Email address *</label>
+        <input type="email" id="email" placeholder="jordan@email.com">
+      </div>
+      <div class="field">
+        <label>Unit / property address *</label>
+        <input type="text" id="unit" placeholder="Apt 4B, 12 Willow Street">
+      </div>
+      <div class="field">
+        <label>Intended move-out date *</label>
+        <input type="date" id="moveOutDate">
+      </div>
+      <div class="field">
+        <label>Reason for vacating (optional)</label>
+        <textarea id="reason" placeholder="Relocating for work, purchasing a home, etc."></textarea>
+      </div>
+      <div class="note">
+        Your security deposit will be calculated after a move-out inspection is conducted, in accordance with your lease agreement.
+      </div>
+      <div class="checkline">
+        <input type="checkbox" id="ack">
+        <span>I certify that the information above is accurate and that this constitutes my formal notice to vacate.</span>
+      </div>
+      <button onclick="submit_()" id="submitBtn">Submit official notice</button>
+      <div class="msg" id="formMsg"></div>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div class="step" id="step-done">
+      <div class="center">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#3c6e4f" stroke-width="1.5">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M8 12.5l2.5 2.5L16 9.5"/>
+        </svg>
+        <div class="eyebrow">Notice recorded</div>
+        <h1 style="font-size:20px;">Thank you</h1>
+        <p class="muted">Your notice has been logged and a confirmation email is on its way to you.</p>
+        <p class="footer-id" id="noticeIdLine"></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Quick links: complaints + rent / tenant portal -->
+<div class="quicklinks">
+  <a class="quick-card" href="https://complaints-coral.vercel.app/" target="_blank" rel="noopener noreferrer">
+    <div class="qc-top">
+      <span class="qc-label">Tenant support</span>
+      <span class="qc-arrow">&rarr;</span>
+    </div>
+    <div class="qc-type" data-text="Submit a complaint"></div>
+    <div class="qc-sub">File a maintenance issue or concern directly with the property team.</div>
+  </a>
+  <a class="quick-card" href="https://tenant-portal-pink.vercel.app/" target="_blank" rel="noopener noreferrer">
+    <div class="qc-top">
+      <span class="qc-label">Rent &amp; payments</span>
+      <span class="qc-arrow">&rarr;</span>
+    </div>
+    <div class="qc-type" data-text="Pay rent online"></div>
+    <div class="qc-sub">Open the tenant portal to view your balance and pay rent.</div>
+  </a>
+</div>
+
+<script>
+var verifiedCode = null;
+
+function show(id){
+  document.querySelectorAll('.step').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+
+function checkCode(){
+  var code = document.getElementById('accessCode').value.trim();
+  var msg = document.getElementById('codeMsg');
+  var btn = document.getElementById('codeBtn');
+  if(!code){ msg.className='msg error'; msg.textContent='Enter your access code.'; return; }
+  btn.disabled = true; msg.className='msg'; msg.textContent='Checking\u2026';
+  google.script.run
+    .withSuccessHandler(function(res){
+      btn.disabled = false;
+      if(res.ok){
+        verifiedCode = code;
+        msg.textContent='';
+        show('step-touchid');
+      } else {
+        msg.className='msg error'; msg.textContent = res.error || 'That code isn\u2019t valid. Please check and try again.';
+      }
+    })
+    .withFailureHandler(function(){
+      btn.disabled = false;
+      msg.className='msg error'; msg.textContent='Couldn\u2019t reach the server. Please try again.';
+    })
+    .validateAccessCode(code);
+}
+
+function runTouchId(){
+  var msg = document.getElementById('touchMsg');
+  if(!window.PublicKeyCredential){
+    msg.className='msg error';
+    msg.textContent='Touch ID isn\u2019t supported on this device/browser. Continuing with passcode only.';
+    setTimeout(function(){ show('step-form'); }, 900);
+    return;
+  }
+  document.getElementById('touchBtn').disabled = true;
+  msg.className='msg'; msg.textContent='Follow the prompt from your browser\u2026';
+
+  var challenge = new Uint8Array(32);
+  crypto.getRandomValues(challenge);
+
+  navigator.credentials.get({
+    publicKey: {
+      challenge: challenge,
+      timeout: 30000,
+      userVerification: 'required',
+    }
+  }).then(function(){
+    msg.className='msg success'; msg.textContent='Verified.';
+    setTimeout(function(){ show('step-form'); }, 400);
+  }).catch(function(){
+    // No platform passkey registered yet, or the user cancelled \u2014 fall back gracefully.
+    msg.className='msg error';
+    msg.textContent='No Touch ID passkey found on this device. Continuing with passcode only.';
+    setTimeout(function(){ show('step-form'); }, 1200);
+  });
+}
+
+function skipTouchId(){ show('step-form'); }
+
+function submit_(){
+  var msg = document.getElementById('formMsg');
+  var btn = document.getElementById('submitBtn');
+  var data = {
+    accessCode: verifiedCode,
+    fullName: document.getElementById('fullName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    unit: document.getElementById('unit').value.trim(),
+    moveOutDate: document.getElementById('moveOutDate').value,
+    reason: document.getElementById('reason').value.trim(),
+  };
+  if(!data.fullName || !data.email || !data.unit || !data.moveOutDate){
+    msg.className='msg error'; msg.textContent='Please complete all required fields.'; return;
+  }
+  if(!document.getElementById('ack').checked){
+    msg.className='msg error'; msg.textContent='Please certify the notice before submitting.'; return;
+  }
+  btn.disabled = true; msg.className='msg'; msg.textContent='Submitting\u2026';
+
+  google.script.run
+    .withSuccessHandler(function(res){
+      btn.disabled = false;
+      if(res.ok){
+        document.getElementById('noticeIdLine').textContent = 'Reference #' + res.noticeId;
+        show('step-done');
+      } else {
+        msg.className='msg error'; msg.textContent = res.error || 'Something went wrong. Please try again.';
+      }
+    })
+    .withFailureHandler(function(){
+      btn.disabled = false;
+      msg.className='msg error'; msg.textContent='Couldn\u2019t reach the server. Please try again.';
+    })
+    .submitNotice(data);
+}
+
+/* ---------- Typewriter effect for the quick-link cards ---------- */
+function startTyping(el, text){
+  var i = 0, deleting = false;
+  function tick(){
+    if(!deleting){
+      i++;
+      el.textContent = text.slice(0, i);
+      if(i === text.length){ deleting = true; setTimeout(tick, 1600); return; }
+      setTimeout(tick, 55);
+    } else {
+      i--;
+      el.textContent = text.slice(0, i);
+      if(i === 0){ deleting = false; setTimeout(tick, 500); return; }
+      setTimeout(tick, 30);
+    }
+  }
+  tick();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.qc-type').forEach(function(el){
+    startTyping(el, el.getAttribute('data-text') || '');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,360 +1,522 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <base target="_top">
-  <meta charset="utf-8">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --ink:#1b2430; --parchment:#f6f1e7; --paper:#fffdf8;
-      --line:#d9d2c1; --brass:#9c7a3c; --brass-dark:#6e5726;
-      --muted:#5b6472; --danger:#a63c3c; --success:#3c6e4f;
-    }
-    *{box-sizing:border-box;}
-    body{
-      margin:0; background:var(--parchment); color:var(--ink);
-      font-family:'Inter',sans-serif; min-height:100vh;
-      display:flex; align-items:center; justify-content:center; padding:32px 16px;
-    }
-    .sheet{
-      width:100%; max-width:520px; background:var(--paper);
-      border:1px solid var(--line); position:relative;
-      box-shadow:0 1px 2px rgba(27,36,48,0.04);
-    }
-    .letterhead{
-      padding:32px 40px 22px; text-align:center; border-bottom:1px dashed var(--line);
-      position:relative;
-    }
-    .letterhead .seal{
-      width:44px; height:44px; border-radius:50%; border:1.5px solid var(--brass);
-      display:flex; align-items:center; justify-content:center; margin:0 auto 14px;
-      color:var(--brass); font-family:'Fraunces',serif; font-size:17px;
-    }
-    .letterhead h1{
-      font-family:'Fraunces',serif; font-weight:500; font-size:24px; margin:0 0 6px;
-      letter-spacing:0.2px;
-    }
-    .letterhead p{margin:0; font-size:13px; color:var(--muted); letter-spacing:0.3px;}
-    .eyebrow{
-      font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--brass-dark);
-      margin-bottom:10px;
-    }
-    .body-pad{padding:36px 40px 40px;}
-    .step{display:none;}
-    .step.active{display:block;}
-    label{
-      display:block; font-size:12px; color:var(--muted); margin:0 0 5px; font-weight:500;
-    }
-    .field{margin-bottom:16px;}
-    input[type=text], input[type=email], input[type=date], textarea{
-      width:100%; padding:11px 12px; font-family:'Inter',sans-serif; font-size:14px;
-      border:1px solid var(--line); border-radius:2px; background:var(--paper); color:var(--ink);
-    }
-    input:focus, textarea:focus{outline:none; border-color:var(--brass);}
-    textarea{resize:vertical; min-height:64px;}
-    .code-input{
-      text-align:center; letter-spacing:4px; font-size:18px; font-family:'Fraunces',serif;
-    }
-    button{
-      width:100%; padding:13px; font-family:'Inter',sans-serif; font-size:14px; font-weight:500;
-      background:var(--ink); color:var(--paper); border:none; border-radius:2px; cursor:pointer;
-      letter-spacing:0.2px;
-    }
-    button:hover{background:#2a3546;}
-    button.ghost{
-      background:transparent; color:var(--ink); border:1px solid var(--line); margin-top:10px;
-    }
-    button.ghost:hover{background:var(--parchment);}
-    button:disabled{opacity:0.55; cursor:default;}
-    .center{text-align:center;}
-    .muted{color:var(--muted); font-size:13px;}
-    .msg{font-size:13px; margin-top:10px; min-height:16px;}
-    .msg.error{color:var(--danger);}
-    .msg.success{color:var(--success);}
-    .icon{width:30px; height:30px; margin:0 auto 14px; display:block;}
-    .checkline{
-      display:flex; gap:9px; align-items:flex-start; font-size:13px; color:var(--muted);
-      margin:18px 0 20px;
-    }
-    .checkline input{margin-top:3px;}
-    .note{
-      font-size:12.5px; color:var(--muted); background:var(--parchment);
-      border-left:2px solid var(--brass); padding:10px 12px; margin:6px 0 20px; line-height:1.5;
-    }
-    .footer-id{
-      text-align:center; font-size:11px; color:var(--muted); letter-spacing:0.5px; margin-top:6px;
-    }
-    .quicklinks{
-      display:flex; flex-wrap:wrap; gap:8px; padding:14px 40px;
-      background:var(--parchment); border-bottom:1px dashed var(--line);
-    }
-    .qlink{
-      flex:1; min-width:190px; display:flex; align-items:center; gap:8px;
-      padding:10px 12px; background:var(--paper); border:1px solid var(--line);
-      border-radius:3px; text-decoration:none; color:var(--ink); font-size:12.5px;
-      font-weight:500; transition:border-color .15s ease, transform .1s ease;
-      white-space:nowrap; overflow:hidden;
-    }
-    .qlink:hover{border-color:var(--brass); transform:translateY(-1px);}
-    .qlink .qicon{font-size:14px; color:var(--brass); flex-shrink:0;}
-    .qlink .typed::after{
-      content:''; display:inline-block; width:1px; height:12px; background:var(--ink);
-      margin-left:2px; vertical-align:middle; animation:blink 0.9s step-end infinite;
-    }
-    @keyframes blink{ 50%{ opacity:0; } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notice to Vacate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-soft:#5B6472;
+    --paper:#EDE7DA;
+    --card:#FBF9F3;
+    --line:#D9D2C1;
+    --brass:#9C7A3C;
+    --brass-dark:#7C5F2C;
+    --forest:#2F4538;
+    --forest-dark:#223328;
+    --rust:#A0473A;
+    --shadow: 0 1px 2px rgba(27,36,48,0.06), 0 12px 28px -14px rgba(27,36,48,0.22);
+    --radius: 3px;
+  }
 
-    /* ---- Responsive: phones & narrow viewports ---- */
-    @media (max-width:480px){
-      body{ padding:16px 8px; align-items:flex-start; }
-      .letterhead{ padding:24px 20px 16px; }
-      .letterhead h1{ font-size:20px; }
-      .letterhead .seal{ width:38px; height:38px; font-size:15px; }
-      .quicklinks{ padding:12px 20px; flex-direction:column; }
-      .qlink{ min-width:0; }
-      .body-pad{ padding:24px 20px 28px; }
-      .code-input{ font-size:16px; letter-spacing:2px; }
-      input[type=text], input[type=email], input[type=date], textarea{ font-size:16px; }
-    }
-    @media (max-width:340px){
-      .letterhead{ padding:20px 14px 14px; }
-      .body-pad{ padding:18px 14px 22px; }
-    }
-  </style>
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 480px at 50% -10%, rgba(156,122,60,0.10), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    min-height:100svh;
+    padding: clamp(16px, 4vw, 48px);
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:500; margin:0; }
+
+  .wrap{ max-width: 620px; margin: 0 auto; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--brass-dark);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::after{ content:""; height:1px; flex:1; background:var(--line); }
+
+  header.site{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom: clamp(28px, 5vw, 44px); }
+  header.site .brand{ font-family:'Fraunces', serif; font-size: clamp(19px, 2.4vw, 22px); }
+  header.site .brand small{ display:block; font-family:'Inter', sans-serif; font-size:12.5px; color:var(--ink-soft); font-weight:500; margin-top:2px; }
+
+  /* ---------- stamp mark (signature element) ---------- */
+  .stamp{
+    --size:56px;
+    width:var(--size); height:var(--size);
+    border-radius:50%;
+    border:1.5px dashed var(--brass);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    transform: rotate(-8deg);
+    position:relative;
+    color:var(--brass-dark);
+  }
+  .stamp svg{ width:58%; height:58%; }
+  .stamp.lg{ --size:88px; }
+  .stamp.forest{ border-color: var(--forest); color: var(--forest-dark); }
+
+  /* ---------- card shell ---------- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- gate screen ---------- */
+  #gate{
+    padding: clamp(28px, 6vw, 48px) clamp(22px, 6vw, 40px);
+    text-align:center;
+    animation: rise .5s ease both;
+  }
+  #gate .stamp{ margin: 0 auto 20px; }
+  #gate h1{ font-size: clamp(22px, 3.6vw, 27px); margin-bottom:8px; }
+  #gate p.sub{ color:var(--ink-soft); font-size:14.5px; max-width:38ch; margin:0 auto 26px; }
+
+  .code-row{ display:flex; gap:8px; justify-content:center; margin-bottom:6px; }
+  input[type="text"].code-input{
+    width: min(220px, 60vw);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:17px;
+    letter-spacing:.12em;
+    text-align:center;
+    text-transform:uppercase;
+    padding:13px 10px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:#fff;
+    color:var(--ink);
+  }
+  input.code-input:focus, button:focus-visible, a.btn:focus-visible, .link-btn:focus-visible{
+    outline: 2px solid var(--brass); outline-offset: 2px;
+  }
+
+  .err{
+    color:var(--rust); font-size:13px; min-height:18px; margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  button, a.btn{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    border:none; cursor:pointer; border-radius:var(--radius);
+    padding:13px 22px;
+    transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
+  }
+  .btn-primary{ background:var(--forest); color:#F6F3EA; width:100%; margin-top:14px; }
+  .btn-primary:hover{ background:var(--forest-dark); transform:translateY(-1px); }
+  .btn-primary:disabled{ opacity:.55; cursor:default; transform:none; }
+  .btn-ghost{
+    background:transparent; color:var(--ink-soft); border:1px solid var(--line) !important;
+    width:100%; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:9px;
+  }
+  .btn-ghost:hover{ border-color:var(--brass) !important; color:var(--ink); }
+
+  .divider{ display:flex; align-items:center; gap:12px; margin:18px 0; color:var(--ink-soft); font-size:12px; font-family:'IBM Plex Mono', monospace; letter-spacing:.06em; }
+  .divider::before,.divider::after{ content:""; height:1px; flex:1; background:var(--line); }
+
+  .touch-note{ font-size:12px; color:var(--ink-soft); margin-top:16px; line-height:1.5; }
+
+  /* ---------- main app (hidden until unlocked) ---------- */
+  #app{ display:none; }
+  #app.show{ display:block; animation: rise .55s ease both; }
+
+  .hero{ margin-bottom: 26px; }
+  .hero h1{ font-size: clamp(26px, 4vw, 34px); margin: 10px 0 10px; }
+  .hero p{ color:var(--ink-soft); font-size:15px; max-width:52ch; }
+
+  form.card{ padding: clamp(20px, 4vw, 32px); }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:6px; letter-spacing:.02em; }
+  .field .req{ color:var(--brass-dark); }
+  .field input, .field textarea{
+    width:100%; font-family:'Inter', sans-serif; font-size:15px; color:var(--ink);
+    padding:11px 12px; border:1px solid var(--line); border-radius:var(--radius); background:#fff;
+  }
+  .field textarea{ resize:vertical; min-height:80px; font-family:'Inter', sans-serif; }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:480px){ .two-col{ grid-template-columns:1fr; } }
+
+  .form-note{ font-size:12.5px; color:var(--ink-soft); margin-top:-4px; margin-bottom:18px; }
+
+  /* ---------- confirmation ---------- */
+  #confirm{ display:none; text-align:center; padding: clamp(30px,6vw,46px) clamp(20px,5vw,36px); }
+  #confirm.show{ display:block; animation: rise .5s ease both; }
+  #confirm .stamp{ margin:0 auto 18px; }
+  #confirm .ref{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--brass-dark); letter-spacing:.06em; margin-top:4px; }
+  #confirm p{ color:var(--ink-soft); font-size:14.5px; max-width:42ch; margin:14px auto 0; }
+
+  /* ---------- portal links ---------- */
+  .services{ margin-top: 34px; }
+  .services h2{ font-size:15px; letter-spacing:.04em; }
+  .service-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+  @media (max-width:560px){ .service-grid{ grid-template-columns:1fr; } }
+
+  .link-btn{
+    display:block; text-decoration:none; color:var(--ink);
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 18px 20px; box-shadow:var(--shadow);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .link-btn:hover{ transform:translateY(-3px); border-color:var(--brass); box-shadow:0 4px 8px rgba(27,36,48,0.08), 0 20px 34px -16px rgba(27,36,48,0.28); }
+  .link-btn .lb-top{ display:flex; align-items:center; justify-content:space-between; }
+  .link-btn .lb-title{ font-family:'Fraunces', serif; font-size:17px; }
+  .link-btn .lb-arrow{ color:var(--brass-dark); transition:transform .18s ease; }
+  .link-btn:hover .lb-arrow{ transform:translate(3px,-3px); }
+  .link-btn .lb-type{
+    margin-top:9px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-soft);
+    min-height:16px; white-space:nowrap; overflow:hidden;
+  }
+  .lb-type .cursor{ display:inline-block; width:1px; background:var(--brass); margin-left:1px; animation: blink 1s step-end infinite; }
+
+  footer{ text-align:center; font-size:12px; color:var(--ink-soft); margin-top:40px; }
+
+  @keyframes rise{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:none; } }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001s !important; transition-duration:.001s !important; }
+  }
+</style>
 </head>
 <body>
-<div class="sheet">
-  <div class="letterhead">
-    <div class="seal">N</div>
-    <h1>Notice to vacate</h1>
-    <p>Official tenant portal</p>
+
+<div class="wrap">
+
+  <header class="site">
+    <div class="brand">Mazivs Properties<small>Tenant Services</small></div>
+    <div class="stamp" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3l1.9 4.6 4.9.4-3.7 3.3 1.1 4.9L12 13.8 7.8 16.2l1.1-4.9L5.2 8l4.9-.4L12 3z"/></svg>
+    </div>
+  </header>
+
+  <!-- ===================== ACCESS GATE ===================== -->
+  <section id="gate" class="card">
+    <div class="stamp lg forest" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="10" width="16" height="10" rx="1"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+    <div class="eyebrow" style="justify-content:center;">Tenant access</div>
+    <h1>Enter your access code</h1>
+    <p class="sub">This keeps the vacate-notice form to residents of the building only.</p>
+
+    <div id="codeForm">
+      <div class="code-row">
+        <input id="codeInput" class="code-input" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" placeholder="ACCESS CODE" maxlength="24">
+      </div>
+      <div class="err" id="gateErr"></div>
+      <button class="btn-primary" id="unlockBtn" type="button">Unlock</button>
+    </div>
+
+    <div id="touchRow" style="display:none;">
+      <div class="divider">or</div>
+      <button class="btn-ghost" id="touchBtn" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3a5 5 0 0 0-5 5v2a7 7 0 0 0 2 4.9M12 3a5 5 0 0 1 5 5v2c0 1-.1 2-.4 2.9M8 10a4 4 0 0 1 8 0v2c0 4-1.5 6.5-3 8M12 10v2c0 3-1 5-3 7"/></svg>
+        <span>Continue with Touch ID / Face ID</span>
+      </button>
+    </div>
+
+    <p class="touch-note" id="offerTouch" style="display:none;">
+      Want to skip the code next time? <a href="#" id="enableTouch" style="color:var(--brass-dark);">Save this device with Touch ID / Face ID</a>.
+    </p>
+  </section>
+
+  <!-- ===================== MAIN APP ===================== -->
+  <div id="app">
+
+    <section class="hero">
+      <div class="eyebrow">Formal notice</div>
+      <h1>Notice to Vacate</h1>
+      <p>Tell us your move-out date and we'll confirm receipt by email and let the office know. Your deposit is worked out after a move-out inspection, per your lease.</p>
+    </section>
+
+    <form class="card" id="noticeForm" novalidate>
+      <div class="field">
+        <label for="fullName">Full name <span class="req">*</span></label>
+        <input id="fullName" name="fullName" type="text" required autocomplete="name">
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input id="email" name="email" type="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="unit">Unit <span class="req">*</span></label>
+          <input id="unit" name="unit" type="text" required placeholder="e.g. B4" autocomplete="off">
+        </div>
+      </div>
+      <div class="field">
+        <label for="moveOutDate">Move-out date <span class="req">*</span></label>
+        <input id="moveOutDate" name="moveOutDate" type="date" required>
+      </div>
+      <div class="field" style="margin-bottom:6px;">
+        <label for="reason">Reason for leaving <span style="font-weight:400;">(optional)</span></label>
+        <textarea id="reason" name="reason" placeholder="Anything you'd like the office to know"></textarea>
+      </div>
+      <div class="form-note">Fields marked <span class="req">*</span> are required.</div>
+      <div class="err" id="formErr"></div>
+      <button class="btn-primary" id="submitBtn" type="submit">Submit notice</button>
+    </form>
+
+    <section id="confirm" class="card">
+      <div class="stamp lg" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h2 style="font-size:22px;">Notice received</h2>
+      <div class="ref" id="confirmId"></div>
+      <p>We've emailed you a confirmation. The office will be in touch to schedule your move-out inspection.</p>
+    </section>
+
+    <section class="services">
+      <h2 class="eyebrow" style="justify-content:flex-start;">While you're here</h2>
+      <div class="service-grid">
+        <a class="link-btn" href="https://complaints-coral.vercel.app/" target="_blank" rel="noopener">
+          <div class="lb-top">
+            <span class="lb-title">Complaints</span>
+            <span class="lb-arrow" aria-hidden="true">↗</span>
+          </div>
+          <div class="lb-type" data-phrases="Report a leaking tap|Flag a broken lock|Request a repair|Note a maintenance issue"></div>
+        </a>
+        <a class="link-btn" href="https://tenant-portal-pink.vercel.app/" target="_blank" rel="noopener">
+          <div class="lb-top">
+            <span class="lb-title">Payments &amp; Bank Messages</span>
+            <span class="lb-arrow" aria-hidden="true">↗</span>
+          </div>
+          <div class="lb-type" data-phrases="Confirm a bank transfer|Send your payment slip|Message the office on rent|Check a payment status"></div>
+        </a>
+      </div>
+    </section>
+
+    <footer>Mazivs Properties &middot; Tenant Services</footer>
   </div>
 
-  <div class="quicklinks">
-    <a class="qlink" id="complaintsLink" href="https://complaints-coral.vercel.app/" target="_blank" rel="noopener">
-      <span class="qicon">&#9993;</span><span class="typed" id="typedComplaints"></span>
-    </a>
-    <a class="qlink" id="rentLink" href="https://tenant-portal-pink.vercel.app/" target="_blank" rel="noopener">
-      <span class="qicon">&#8962;</span><span class="typed" id="typedRent"></span>
-    </a>
-  </div>
-
-  <div class="body-pad">
-
-    <!-- Step 1: Access code -->
-    <div class="step active" id="step-code">
-      <div class="eyebrow center">Restricted access</div>
-      <p class="muted center" style="margin-bottom:22px;">Enter the access code provided by your property manager.</p>
-      <div class="field">
-        <input class="code-input" type="text" id="accessCode" placeholder="ACCESS CODE" autocomplete="off">
-      </div>
-      <button onclick="checkCode()" id="codeBtn">Continue</button>
-      <div class="msg" id="codeMsg"></div>
-    </div>
-
-    <!-- Step 2: Touch ID -->
-    <div class="step" id="step-touchid">
-      <div class="center">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#9c7a3c" stroke-width="1.5">
-          <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"/>
-          <path d="M8 13v1a4 4 0 0 0 8 0v-1"/>
-          <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>
-          <path d="M12 9v3"/>
-        </svg>
-        <div class="eyebrow">Identity verification</div>
-        <p class="muted" style="margin:0 0 24px;">Confirm it\u2019s you with Touch ID before we open the form.</p>
-      </div>
-      <button onclick="runTouchId()" id="touchBtn">Verify with Touch ID</button>
-      <button class="ghost" onclick="skipTouchId()">Use passcode only</button>
-      <div class="msg" id="touchMsg"></div>
-    </div>
-
-    <!-- Step 3: Form -->
-    <div class="step" id="step-form">
-      <div class="eyebrow">Tenant particulars</div>
-      <div class="field">
-        <label>Full legal name *</label>
-        <input type="text" id="fullName" placeholder="Jordan Whitaker">
-      </div>
-      <div class="field">
-        <label>Email address *</label>
-        <input type="email" id="email" placeholder="jordan@email.com">
-      </div>
-      <div class="field">
-        <label>Unit / property address *</label>
-        <input type="text" id="unit" placeholder="Apt 4B, 12 Willow Street">
-      </div>
-      <div class="field">
-        <label>Intended move-out date *</label>
-        <input type="date" id="moveOutDate">
-      </div>
-      <div class="field">
-        <label>Reason for vacating (optional)</label>
-        <textarea id="reason" placeholder="Relocating for work, purchasing a home, etc."></textarea>
-      </div>
-      <div class="note">
-        Your security deposit will be calculated after a move-out inspection is conducted, in accordance with your lease agreement.
-      </div>
-      <div class="checkline">
-        <input type="checkbox" id="ack">
-        <span>I certify that the information above is accurate and that this constitutes my formal notice to vacate.</span>
-      </div>
-      <button onclick="submit_()" id="submitBtn">Submit official notice</button>
-      <div class="msg" id="formMsg"></div>
-    </div>
-
-    <!-- Step 4: Confirmation -->
-    <div class="step" id="step-done">
-      <div class="center">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#3c6e4f" stroke-width="1.5">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M8 12.5l2.5 2.5L16 9.5"/>
-        </svg>
-        <div class="eyebrow">Notice recorded</div>
-        <h1 style="font-size:20px;">Thank you</h1>
-        <p class="muted">Your notice has been logged and a confirmation email is on its way to you.</p>
-        <p class="footer-id" id="noticeIdLine"></p>
-      </div>
-    </div>
-
-  </div>
 </div>
 
 <script>
-// Paste the Apps Script Web App URL here after deploying (Deploy > New deployment > Web app).
-// It looks like: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEQZLgJqx6xtWN-z3RAwWFxKYWk9wI2UFhxQHMu7DuXwA46k0lpsmEcbszWVf2cYsS/exec';
+(function(){
+  "use strict";
 
-function callBackend(action, extra){
-  var body = Object.assign({ action: action }, extra);
-  // text/plain avoids a CORS preflight, which Apps Script web apps don't handle.
-  return fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(body),
-  }).then(function(r){ return r.json(); });
-}
+  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEQZLgJqx6xtWN-z3RAwWFxKYWk9wI2UFhxQHMu7DuXwA46k0lpsmEcbszWVf2cYsS/exec";
 
-var verifiedCode = null;
+  var STORE_CRED = "mazivs_tp_cred_id";
+  var STORE_CODE = "mazivs_tp_cached";
 
-function typeLoop(elId, text){
-  var el = document.getElementById(elId);
-  if(!el) return;
-  var i = 0, deleting = false;
-  var typeSpeed = 55, deleteSpeed = 28, pauseAfterType = 2600, pauseAfterDelete = 500;
-  function tick(){
-    if(!deleting){
-      el.textContent = text.slice(0, i + 1);
-      i++;
-      if(i === text.length){ deleting = true; setTimeout(tick, pauseAfterType); return; }
-      setTimeout(tick, typeSpeed);
-    } else {
-      el.textContent = text.slice(0, i - 1);
-      i--;
-      if(i === 0){ deleting = false; setTimeout(tick, pauseAfterDelete); return; }
-      setTimeout(tick, deleteSpeed);
-    }
+  // ---- tiny helpers ----
+  function $(id){ return document.getElementById(id); }
+  function bufToB64(buf){
+    var bytes = new Uint8Array(buf), bin = "";
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
   }
-  tick();
-}
-typeLoop('typedComplaints', 'Submit a complaint');
-setTimeout(function(){ typeLoop('typedRent', 'Pay rent or submit a request'); }, 400);
-
-function show(id){
-  document.querySelectorAll('.step').forEach(function(el){ el.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
-}
-
-function checkCode(){
-  var code = document.getElementById('accessCode').value.trim();
-  var msg = document.getElementById('codeMsg');
-  var btn = document.getElementById('codeBtn');
-  if(!code){ msg.className='msg error'; msg.textContent='Enter your access code.'; return; }
-  btn.disabled = true; msg.className='msg'; msg.textContent='Checking\u2026';
-  callBackend('validateCode', { code: code })
-    .then(function(res){
-      btn.disabled = false;
-      if(res.ok){
-        verifiedCode = code;
-        msg.textContent='';
-        show('step-touchid');
-      } else {
-        msg.className='msg error'; msg.textContent = res.error || 'That code isn\u2019t valid. Please check and try again.';
-      }
-    })
-    .catch(function(){
-      btn.disabled = false;
-      msg.className='msg error'; msg.textContent='Couldn\u2019t reach the server. Please try again.';
-    });
-}
-
-function runTouchId(){
-  var msg = document.getElementById('touchMsg');
-  if(!window.PublicKeyCredential){
-    msg.className='msg error';
-    msg.textContent='Touch ID isn\u2019t supported on this device/browser. Continuing with passcode only.';
-    setTimeout(function(){ show('step-form'); }, 900);
-    return;
+  function b64ToBuf(b64){
+    var bin = atob(b64), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes.buffer;
   }
-  document.getElementById('touchBtn').disabled = true;
-  msg.className='msg'; msg.textContent='Follow the prompt from your browser\u2026';
+  function randomBytes(len){
+    var a = new Uint8Array(len);
+    crypto.getRandomValues(a);
+    return a;
+  }
+  // Light obfuscation only — this is a local convenience cache, not encryption.
+  // The real check is always re-verified against the server before the form unlocks.
+  function veil(str){ return btoa(unescape(encodeURIComponent(str))).split("").reverse().join(""); }
+  function unveil(str){ try { return decodeURIComponent(escape(atob(str.split("").reverse().join("")))); } catch(e){ return ""; } }
 
-  var challenge = new Uint8Array(32);
-  crypto.getRandomValues(challenge);
+  // ---- backend calls (text/plain body avoids a CORS preflight Apps Script can't answer) ----
+  function callBackend(action, extra){
+    var body = Object.assign({ action: action }, extra || {});
+    return fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(body)
+    }).then(function(r){ return r.json(); });
+  }
 
-  navigator.credentials.get({
-    publicKey: {
-      challenge: challenge,
-      timeout: 30000,
-      userVerification: 'required',
-    }
-  }).then(function(){
-    msg.className='msg success'; msg.textContent='Verified.';
-    setTimeout(function(){ show('step-form'); }, 400);
-  }).catch(function(){
-    // No platform passkey registered yet, or the user cancelled \u2014 fall back gracefully.
-    msg.className='msg error';
-    msg.textContent='No Touch ID passkey found on this device. Continuing with passcode only.';
-    setTimeout(function(){ show('step-form'); }, 1200);
+  // ================= ACCESS GATE =================
+  var gateErr = $("gateErr"), codeInput = $("codeInput"), unlockBtn = $("unlockBtn");
+
+  function unlock(){
+    $("gate").style.display = "none";
+    $("app").classList.add("show");
+    codeInput.value = "";
+  }
+
+  function tryCode(code, opts){
+    opts = opts || {};
+    gateErr.textContent = "";
+    unlockBtn.disabled = true;
+    unlockBtn.textContent = opts.silent ? "Checking Touch ID…" : "Checking…";
+    callBackend("validateCode", { code: code })
+      .then(function(res){
+        unlockBtn.disabled = false;
+        unlockBtn.textContent = "Unlock";
+        if (res && res.ok) {
+          unlock();
+          if (!localStorage.getItem(STORE_CRED)) {
+            $("offerTouch").style.display = "block";
+            $("offerTouch").dataset.code = code;
+          }
+        } else if (!opts.silent) {
+          gateErr.textContent = (res && res.error) || "That code doesn't match. Please try again.";
+        } else {
+          // a saved Touch ID code no longer matches the server — fall back to manual entry
+          localStorage.removeItem(STORE_CRED);
+          localStorage.removeItem(STORE_CODE);
+          $("touchRow").style.display = "none";
+          gateErr.textContent = "Your saved access has expired — please enter the code once more.";
+        }
+      })
+      .catch(function(){
+        unlockBtn.disabled = false;
+        unlockBtn.textContent = "Unlock";
+        gateErr.textContent = "Couldn't reach the server. Check your connection and try again.";
+      });
+  }
+
+  unlockBtn.addEventListener("click", function(){
+    var code = codeInput.value.trim();
+    if (!code) { gateErr.textContent = "Enter your access code first."; return; }
+    tryCode(code);
   });
-}
+  codeInput.addEventListener("keydown", function(e){ if (e.key === "Enter") unlockBtn.click(); });
 
-function skipTouchId(){ show('step-form'); }
-
-function submit_(){
-  var msg = document.getElementById('formMsg');
-  var btn = document.getElementById('submitBtn');
-  var data = {
-    accessCode: verifiedCode,
-    fullName: document.getElementById('fullName').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    unit: document.getElementById('unit').value.trim(),
-    moveOutDate: document.getElementById('moveOutDate').value,
-    reason: document.getElementById('reason').value.trim(),
-  };
-  if(!data.fullName || !data.email || !data.unit || !data.moveOutDate){
-    msg.className='msg error'; msg.textContent='Please complete all required fields.'; return;
-  }
-  if(!document.getElementById('ack').checked){
-    msg.className='msg error'; msg.textContent='Please certify the notice before submitting.'; return;
-  }
-  btn.disabled = true; msg.className='msg'; msg.textContent='Submitting\u2026';
-
-  callBackend('submitNotice', { payload: data })
-    .then(function(res){
-      btn.disabled = false;
-      if(res.ok){
-        document.getElementById('noticeIdLine').textContent = 'Reference #' + res.noticeId;
-        show('step-done');
-      } else {
-        msg.className='msg error'; msg.textContent = res.error || 'Something went wrong. Please try again.';
+  // ================= TOUCH ID / FACE ID =================
+  var platformAuthAvailable = false;
+  if (window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
+    PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(function(avail){
+      platformAuthAvailable = avail;
+      if (avail && localStorage.getItem(STORE_CRED)) {
+        $("touchRow").style.display = "block";
       }
-    })
-    .catch(function(){
-      btn.disabled = false;
-      msg.className='msg error'; msg.textContent='Couldn\u2019t reach the server. Please try again.';
+    }).catch(function(){});
+  }
+
+  $("enableTouch").addEventListener("click", function(e){
+    e.preventDefault();
+    var code = $("offerTouch").dataset.code || "";
+    if (!platformAuthAvailable) {
+      $("offerTouch").textContent = "Touch ID / Face ID isn't available on this device or browser.";
+      return;
+    }
+    navigator.credentials.create({
+      publicKey: {
+        challenge: randomBytes(32),
+        rp: { name: "Mazivs Properties — Tenant Services" },
+        user: { id: randomBytes(16), name: "tenant", displayName: "Tenant" },
+        pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+        authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+        timeout: 60000
+      }
+    }).then(function(cred){
+      localStorage.setItem(STORE_CRED, bufToB64(cred.rawId));
+      localStorage.setItem(STORE_CODE, veil(code));
+      $("offerTouch").style.display = "none";
+    }).catch(function(){
+      $("offerTouch").textContent = "Couldn't set up Touch ID / Face ID on this device — you can still use the code.";
     });
-}
+  });
+
+  $("touchBtn").addEventListener("click", function(){
+    var credId = localStorage.getItem(STORE_CRED);
+    if (!credId) return;
+    navigator.credentials.get({
+      publicKey: {
+        challenge: randomBytes(32),
+        allowCredentials: [{ id: b64ToBuf(credId), type: "public-key" }],
+        userVerification: "required",
+        timeout: 60000
+      }
+    }).then(function(){
+      var code = unveil(localStorage.getItem(STORE_CODE) || "");
+      tryCode(code, { silent: true });
+    }).catch(function(){
+      gateErr.textContent = "Touch ID / Face ID didn't go through — enter your code instead.";
+    });
+  });
+
+  // ================= NOTICE FORM =================
+  var noticeForm = $("noticeForm"), formErr = $("formErr"), submitBtn = $("submitBtn");
+
+  noticeForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    formErr.textContent = "";
+
+    var payload = {
+      fullName: $("fullName").value.trim(),
+      email: $("email").value.trim(),
+      unit: $("unit").value.trim(),
+      moveOutDate: $("moveOutDate").value,
+      reason: $("reason").value.trim()
+    };
+    if (!payload.fullName || !payload.email || !payload.unit || !payload.moveOutDate) {
+      formErr.textContent = "Please fill in all required fields.";
+      return;
+    }
+
+    var savedCode = unveil(localStorage.getItem(STORE_CODE) || "");
+    payload.accessCode = savedCode || codeInput.value.trim();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting…";
+
+    callBackend("submitNotice", { payload: payload })
+      .then(function(res){
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit notice";
+        if (res && res.ok) {
+          noticeForm.style.display = "none";
+          $("confirmId").textContent = "Reference #" + res.noticeId;
+          $("confirm").classList.add("show");
+        } else {
+          formErr.textContent = (res && res.error) || "Something went wrong — please try again.";
+        }
+      })
+      .catch(function(){
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit notice";
+        formErr.textContent = "Couldn't reach the server. Check your connection and try again.";
+      });
+  });
+
+  // ================= TYPEWRITER ON SERVICE CARDS =================
+  document.querySelectorAll(".lb-type").forEach(function(el){
+    var phrases = (el.dataset.phrases || "").split("|").filter(Boolean);
+    if (!phrases.length) return;
+    var pi = 0, ci = 0, deleting = false;
+    var span = document.createElement("span");
+    var cursor = document.createElement("span");
+    cursor.className = "cursor";
+    el.appendChild(span);
+    el.appendChild(cursor);
+
+    function tick(){
+      var word = phrases[pi];
+      ci += deleting ? -1 : 1;
+      span.textContent = word.slice(0, ci);
+      var delay = deleting ? 28 : 45;
+      if (!deleting && ci === word.length) { delay = 1400; deleting = true; }
+      else if (deleting && ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; delay = 350; }
+      setTimeout(tick, delay);
+    }
+    setTimeout(tick, 400 + Math.random() * 400);
+  });
+
+})();
 </script>
 </body>
 </html>

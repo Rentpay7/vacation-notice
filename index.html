@@ -3,7 +3,6 @@
 <head>
   <base target="_top">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -13,12 +12,10 @@
       --muted:#5b6472; --danger:#a63c3c; --success:#3c6e4f;
     }
     *{box-sizing:border-box;}
-    html{-webkit-text-size-adjust:100%;}
     body{
       margin:0; background:var(--parchment); color:var(--ink);
       font-family:'Inter',sans-serif; min-height:100vh;
-      display:flex; flex-direction:column; align-items:center;
-      gap:18px; padding:32px 16px 40px;
+      display:flex; align-items:center; justify-content:center; padding:32px 16px;
     }
     .sheet{
       width:100%; max-width:520px; background:var(--paper);
@@ -88,49 +85,40 @@
     .footer-id{
       text-align:center; font-size:11px; color:var(--muted); letter-spacing:0.5px; margin-top:6px;
     }
-
-    /* ---------- Quick links (complaints + rent portal) ---------- */
     .quicklinks{
-      width:100%; max-width:520px;
-      display:flex; flex-direction:column; gap:12px;
+      display:flex; flex-wrap:wrap; gap:8px; padding:14px 40px;
+      background:var(--parchment); border-bottom:1px dashed var(--line);
     }
-    .quick-card{
-      flex:1; display:block; text-decoration:none; color:var(--ink);
-      background:var(--paper); border:1px solid var(--line); border-radius:2px;
-      padding:18px 20px; transition:border-color .2s ease, transform .15s ease, box-shadow .2s ease;
-    }
-    .quick-card:hover{
-      border-color:var(--brass); transform:translateY(-1px);
-      box-shadow:0 4px 10px rgba(27,36,48,0.06);
-    }
-    .quick-card:active{transform:translateY(0);}
-    .quick-card .qc-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
-    .quick-card .qc-label{
-      font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--brass-dark);
-    }
-    .quick-card .qc-arrow{color:var(--brass); font-size:14px; flex:0 0 auto;}
-    .quick-card .qc-type{
-      font-family:'Fraunces',serif; font-size:16px; margin-top:8px; min-height:22px;
+    .qlink{
+      flex:1; min-width:190px; display:flex; align-items:center; gap:8px;
+      padding:10px 12px; background:var(--paper); border:1px solid var(--line);
+      border-radius:3px; text-decoration:none; color:var(--ink); font-size:12.5px;
+      font-weight:500; transition:border-color .15s ease, transform .1s ease;
       white-space:nowrap; overflow:hidden;
     }
-    .quick-card .qc-type::after{
-      content:''; display:inline-block; width:2px; height:15px; background:var(--brass);
-      margin-left:2px; vertical-align:-2px; animation:qc-blink 0.9s steps(1) infinite;
+    .qlink:hover{border-color:var(--brass); transform:translateY(-1px);}
+    .qlink .qicon{font-size:14px; color:var(--brass); flex-shrink:0;}
+    .qlink .typed::after{
+      content:''; display:inline-block; width:1px; height:12px; background:var(--ink);
+      margin-left:2px; vertical-align:middle; animation:blink 0.9s step-end infinite;
     }
-    @keyframes qc-blink{50%{opacity:0;}}
-    .quick-card .qc-sub{font-size:12px; color:var(--muted); margin-top:6px; line-height:1.4;}
+    @keyframes blink{ 50%{ opacity:0; } }
 
-    @media(min-width:560px){
-      .quicklinks{flex-direction:row;}
+    /* ---- Responsive: phones & narrow viewports ---- */
+    @media (max-width:480px){
+      body{ padding:16px 8px; align-items:flex-start; }
+      .letterhead{ padding:24px 20px 16px; }
+      .letterhead h1{ font-size:20px; }
+      .letterhead .seal{ width:38px; height:38px; font-size:15px; }
+      .quicklinks{ padding:12px 20px; flex-direction:column; }
+      .qlink{ min-width:0; }
+      .body-pad{ padding:24px 20px 28px; }
+      .code-input{ font-size:16px; letter-spacing:2px; }
+      input[type=text], input[type=email], input[type=date], textarea{ font-size:16px; }
     }
-
-    /* ---------- Small-screen refinements ---------- */
-    @media(max-width:420px){
-      body{padding:20px 12px 32px; gap:14px;}
-      .letterhead{padding:24px 20px 16px;}
-      .letterhead h1{font-size:20px;}
-      .body-pad{padding:24px 20px 28px;}
-      .quick-card{padding:16px;}
+    @media (max-width:340px){
+      .letterhead{ padding:20px 14px 14px; }
+      .body-pad{ padding:18px 14px 22px; }
     }
   </style>
 </head>
@@ -140,6 +128,15 @@
     <div class="seal">N</div>
     <h1>Notice to vacate</h1>
     <p>Official tenant portal</p>
+  </div>
+
+  <div class="quicklinks">
+    <a class="qlink" id="complaintsLink" href="https://complaints-coral.vercel.app/" target="_blank" rel="noopener">
+      <span class="qicon">&#9993;</span><span class="typed" id="typedComplaints"></span>
+    </a>
+    <a class="qlink" id="rentLink" href="https://tenant-portal-pink.vercel.app/" target="_blank" rel="noopener">
+      <span class="qicon">&#8962;</span><span class="typed" id="typedRent"></span>
+    </a>
   </div>
 
   <div class="body-pad">
@@ -165,7 +162,7 @@
           <path d="M12 9v3"/>
         </svg>
         <div class="eyebrow">Identity verification</div>
-        <p class="muted" style="margin:0 0 24px;">Confirm it&rsquo;s you with Touch ID before we open the form.</p>
+        <p class="muted" style="margin:0 0 24px;">Confirm it\u2019s you with Touch ID before we open the form.</p>
       </div>
       <button onclick="runTouchId()" id="touchBtn">Verify with Touch ID</button>
       <button class="ghost" onclick="skipTouchId()">Use passcode only</button>
@@ -223,28 +220,45 @@
   </div>
 </div>
 
-<!-- Quick links: complaints + rent / tenant portal -->
-<div class="quicklinks">
-  <a class="quick-card" href="https://complaints-coral.vercel.app/" target="_blank" rel="noopener noreferrer">
-    <div class="qc-top">
-      <span class="qc-label">Tenant support</span>
-      <span class="qc-arrow">&rarr;</span>
-    </div>
-    <div class="qc-type" data-text="Submit a complaint"></div>
-    <div class="qc-sub">File a maintenance issue or concern directly with the property team.</div>
-  </a>
-  <a class="quick-card" href="https://tenant-portal-pink.vercel.app/" target="_blank" rel="noopener noreferrer">
-    <div class="qc-top">
-      <span class="qc-label">Rent &amp; payments</span>
-      <span class="qc-arrow">&rarr;</span>
-    </div>
-    <div class="qc-type" data-text="Pay rent online"></div>
-    <div class="qc-sub">Open the tenant portal to view your balance and pay rent.</div>
-  </a>
-</div>
-
 <script>
+// Paste the Apps Script Web App URL here after deploying (Deploy > New deployment > Web app).
+// It looks like: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXI6cusjh3cVoZUVTAwKuWBoE1lTIsnhgrrv_jprCl9nufPK67bxDCfH8Cyq3IhacW/exec';
+
+function callBackend(action, extra){
+  var body = Object.assign({ action: action }, extra);
+  // text/plain avoids a CORS preflight, which Apps Script web apps don't handle.
+  return fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(body),
+  }).then(function(r){ return r.json(); });
+}
+
 var verifiedCode = null;
+
+function typeLoop(elId, text){
+  var el = document.getElementById(elId);
+  if(!el) return;
+  var i = 0, deleting = false;
+  var typeSpeed = 55, deleteSpeed = 28, pauseAfterType = 2600, pauseAfterDelete = 500;
+  function tick(){
+    if(!deleting){
+      el.textContent = text.slice(0, i + 1);
+      i++;
+      if(i === text.length){ deleting = true; setTimeout(tick, pauseAfterType); return; }
+      setTimeout(tick, typeSpeed);
+    } else {
+      el.textContent = text.slice(0, i - 1);
+      i--;
+      if(i === 0){ deleting = false; setTimeout(tick, pauseAfterDelete); return; }
+      setTimeout(tick, deleteSpeed);
+    }
+  }
+  tick();
+}
+typeLoop('typedComplaints', 'Submit a complaint');
+setTimeout(function(){ typeLoop('typedRent', 'Pay rent or submit a request'); }, 400);
 
 function show(id){
   document.querySelectorAll('.step').forEach(function(el){ el.classList.remove('active'); });
@@ -257,8 +271,8 @@ function checkCode(){
   var btn = document.getElementById('codeBtn');
   if(!code){ msg.className='msg error'; msg.textContent='Enter your access code.'; return; }
   btn.disabled = true; msg.className='msg'; msg.textContent='Checking\u2026';
-  google.script.run
-    .withSuccessHandler(function(res){
+  callBackend('validateCode', { code: code })
+    .then(function(res){
       btn.disabled = false;
       if(res.ok){
         verifiedCode = code;
@@ -268,11 +282,10 @@ function checkCode(){
         msg.className='msg error'; msg.textContent = res.error || 'That code isn\u2019t valid. Please check and try again.';
       }
     })
-    .withFailureHandler(function(){
+    .catch(function(){
       btn.disabled = false;
       msg.className='msg error'; msg.textContent='Couldn\u2019t reach the server. Please try again.';
-    })
-    .validateAccessCode(code);
+    });
 }
 
 function runTouchId(){
@@ -327,8 +340,8 @@ function submit_(){
   }
   btn.disabled = true; msg.className='msg'; msg.textContent='Submitting\u2026';
 
-  google.script.run
-    .withSuccessHandler(function(res){
+  callBackend('submitNotice', { payload: data })
+    .then(function(res){
       btn.disabled = false;
       if(res.ok){
         document.getElementById('noticeIdLine').textContent = 'Reference #' + res.noticeId;
@@ -337,37 +350,11 @@ function submit_(){
         msg.className='msg error'; msg.textContent = res.error || 'Something went wrong. Please try again.';
       }
     })
-    .withFailureHandler(function(){
+    .catch(function(){
       btn.disabled = false;
       msg.className='msg error'; msg.textContent='Couldn\u2019t reach the server. Please try again.';
-    })
-    .submitNotice(data);
+    });
 }
-
-/* ---------- Typewriter effect for the quick-link cards ---------- */
-function startTyping(el, text){
-  var i = 0, deleting = false;
-  function tick(){
-    if(!deleting){
-      i++;
-      el.textContent = text.slice(0, i);
-      if(i === text.length){ deleting = true; setTimeout(tick, 1600); return; }
-      setTimeout(tick, 55);
-    } else {
-      i--;
-      el.textContent = text.slice(0, i);
-      if(i === 0){ deleting = false; setTimeout(tick, 500); return; }
-      setTimeout(tick, 30);
-    }
-  }
-  tick();
-}
-
-document.addEventListener('DOMContentLoaded', function(){
-  document.querySelectorAll('.qc-type').forEach(function(el){
-    startTyping(el, el.getAttribute('data-text') || '');
-  });
-});
 </script>
 </body>
 </html>
